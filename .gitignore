@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Editor stuff
+*.sublime-*
+.vscode/
+
 # C extensions
 *.so
 
