@@ -4,6 +4,7 @@
 from __future__ import print_function, with_statement
 
 import sys
+import abc
 
 from taskflow import task, engines
 from taskflow.patterns import linear_flow as lflow
@@ -20,29 +21,36 @@ class BaseTask(task.Task):
     It support flow name and flow priority value.
     """
 
+    __metaclass__ = abc.ABCMeta
+
     # indicates the priority of this task in the taskflow
-    default_priority = 500
+    # smaller runs first
+    # priority = 200
+
+    # default priority if no priority defined in Task obj
+    DEFAULT_PRIORITY = 500
 
     # indicates the Task properties
     #   name (str): the name of task
     #   provides (tuple(str) or str): the returned names of vars
     #   requires (tuple(str) or str): the names of params of execute method
-    properties = {
-        'name': None,
-        'provides': None,
-        'requires': None,
-    }
+    # properties = {
+    #     'name': None,
+    #     'provides': None,
+    #     'requires': None,
+    # }
 
     # indicates the flow names which this task belongs to.
     # it could be a str or a str list,
     #       str:              the name of the flow
     #       list(str):        the names of all the flows with the same priority
-    flow_name = None
+    # flow_name = 'get_user_details'
 
-    # indicates the complex (flowname, priority) tuple list.
-    # it may overrides `flow_name` and `default_priority` vars when not None
-    flow_attrs = None
+    # indicates the complex [(flowname, priority), ] tuple list.
+    # it may overrides `flow_name` and `priority` vars
+    # flow_attrs = [('get_user_details', 150), ('get_user_name', 200)]
 
+    @abc.abstractmethod
     def execute(self, *a, **ka):
         pass
 
